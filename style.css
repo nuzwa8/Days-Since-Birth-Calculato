@@ -1,0 +1,177 @@
+/**
+ * Date of Birth to Days Calculator - style.css
+ * برانڈنگ اور ڈیزائن گائیڈ (Style Guide) کے مطابق مکمل سٹائلنگ۔
+ */
+
+/* 1. بنیادی ڈھانچہ (Base Structure) اور ٹائپوگرافی (Typography) */
+body {
+    /* بنیادی بیک گراؤنڈ (Main Background): #ffffff (سفید) */
+    background-color: #ffffff; 
+    font-family: sans-serif; /* ٹائپوگرافی (Typography): صاف اور پڑھنے میں آسان فونٹ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box; /* پیڈنگ (Padding) اور بارڈر (Border) کو چوڑائی (Width) میں شامل کرنا */
+}
+
+/* 2. مرکزی کنٹینر (Main Container) */
+.container {
+    /* کنٹینر کا بیک گراؤنڈ (Container Background): #f9f9f9 (ہلکا سرمئی) */
+    background-color: #f9f9f9; 
+    /* زیادہ سے زیادہ چوڑائی (Max Width): 450px */
+    max-width: 450px; 
+    width: 100%;
+    /* پیڈنگ (Padding): 30px */
+    padding: 30px; 
+    /* بارڈر ریڈیس (Border Radius): 15px */
+    border-radius: 15px; 
+    /* شیڈو (Box Shadow): 0 4px 15px rgba(0, 0, 0, 0.1) */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+    /* اوپر کا بارڈر (Top Border): 5px solid #8A2BE2 (پرائمری پرپل) */
+    border-top: 5px solid #8A2BE2; 
+    text-align: center;
+}
+
+/* 3. ہیڈنگ (Headings) */
+.main-heading {
+    /* رنگ: #8A2BE2 (پرائمری پرپل) */
+    color: #8A2BE2; 
+    /* سائز: تقریباً 2em یا 32px */
+    font-size: 2em; 
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.subtitle {
+    color: #6A1B9A; /* ٹیکسٹ کا رنگ (Text Color) */
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}
+
+/* 4. ان پٹ فیلڈز (Input Fields) */
+.input-group {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #6A1B9A; /* ٹیکسٹ کا رنگ */
+}
+
+/* ان پٹ / ڈسپلے فیلڈ (Input/Display Field) کا سٹائل */
+#dob {
+    width: 100%;
+    /* پیڈنگ (Padding): 20px */
+    padding: 20px; 
+    /* بارڈر: 1px solid #ddd */
+    border: 1px solid #ddd; 
+    /* بارڈر ریڈیس (Border Radius): 8px */
+    border-radius: 8px; 
+    /* فونٹ سائز: 2.5em یا 40px */
+    font-size: 2.5em; 
+    text-align: center; /* تاریخ کو مرکز میں لانا */
+    color: #6A1B9A;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+#dob:focus {
+    border-color: #8A2BE2; /* فوکس (Focus) پر بارڈر کا رنگ بدلنا */
+    outline: none;
+}
+
+/* 5. بٹن (Buttons) */
+.purple-button {
+    /* پرائمری رنگ (Primary Purple): #8A2BE2 */
+    background-color: #8A2BE2; 
+    color: #ffffff; /* سفید ٹیکسٹ */
+    width: 100%;
+    /* پیڈنگ (Padding): 20px */
+    padding: 20px; 
+    border: 2px solid #D1C4E9; /* بٹن کا بارڈر (بہت ہلکا پرپل) */
+    /* بارڈر ریڈیس (Border Radius): 8px */
+    border-radius: 8px; 
+    cursor: pointer;
+    /* فونٹ سائز: 1.5em یا 24px */
+    font-size: 1.5em; 
+    /* وزن (Weight): bold (موٹا) */
+    font-weight: bold; 
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+/* ہاور ایفیکٹ (Hover Effect) */
+.purple-button:hover {
+    /* بیک گراؤنڈ #8A2BE2 اور ٹیکسٹ کا رنگ #ffffff (جو کہ پہلے سے ہے) */
+    background-color: #6A1B9A; /* ہاور پر تھوڑا گہرا پرپل */
+    border-color: #8A2BE2;
+}
+
+/* 6. نتیجہ ڈسپلے (Result Display) */
+.result-box {
+    margin-top: 30px;
+    /* ثانوی رنگ (Accent Purple): #F3E5F5 (ہلکا بیک گراؤنڈ) */
+    background-color: #F3E5F5; 
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid #D1C4E9;
+    min-height: 80px; /* کم از کم اونچائی تاکہ خالی نہ لگے */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.result-box p {
+    margin: 0;
+    line-height: 1.5;
+    /* ٹیکسٹ کا رنگ (Text Color): #6A1B9A */
+    color: #6A1B9A; 
+    font-size: 1.2em;
+    font-weight: 500;
+}
+
+.result-box strong {
+    font-size: 1.5em; /* دنوں کی تعداد کو نمایاں کرنا */
+    color: #8A2BE2; /* پرائمری پرپل */
+    font-weight: bold;
+}
+
+/* غلطی (Error) اور لوڈنگ (Loading) کے پیغامات */
+.error-message {
+    color: #e74c3c !important; /* سرخ رنگ */
+    font-weight: bold;
+}
+
+.loading-message {
+    color: #8A2BE2 !important; 
+    font-style: italic;
+}
+
+.success-message {
+    color: #6A1B9A !important;
+}
+
+/* میڈیا کوئیری (Media Query) چھوٹے سکرینز (Screens) کے لیے */
+@media (max-width: 500px) {
+    .container {
+        padding: 20px;
+        border-radius: 10px;
+    }
+    .main-heading {
+        font-size: 1.8em;
+    }
+    .purple-button {
+        font-size: 1.3em;
+        padding: 15px;
+    }
+    #dob {
+        font-size: 2em; /* چھوٹے سکرین پر فونٹ سائز کم کیا گیا */
+        padding: 15px;
+    }
+}
