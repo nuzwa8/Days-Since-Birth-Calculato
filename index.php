@@ -1,16 +1,17 @@
 <?php
 /**
  * Date of Birth to Days Calculator - index.php
- * یہ فائل فارم کا ڈھانچہ اور تاریخوں کے حساب (Days Calculation) کی لاجی (Logic) فراہم کرتی ہے۔
- * JavaScript (AJAX) اس فائل کو فارم ڈیٹا بھیجنے کے لیے استعمال کرے گا۔
+ * یہ فائل HTML ڈھانچہ (Structure) اور تاریخوں کے حساب (Days Calculation) کی لاجی (Logic) فراہم کرتی ہے۔
+ * یہ AJAX اور ریگولر فارم سبمیشن (Regular Form Submission) دونوں کو ہینڈل کرتی ہے۔
  */
 
-// نتائج (Results) اور غلطی (Error) کے پیغامات کے لیے متغیرات (Variables)
+// نتائج اور غلطی کے پیغامات کے لیے متغیرات (Variables)
 $result_message = "";
 $error_message = "";
+$dob_input = ""; // فارم فیلڈ میں ویلیو (Value) کو برقرار رکھنے کے لیے
 
 // فارم جمع (submit) ہونے پر لاجی (Logic)
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['dob'])) {
     // یوزر کی ان پٹ (Input) کو صاف (Sanitize) کرنا
     $dob_input = filter_input(INPUT_POST, 'dob', FILTER_SANITIZE_SPECIAL_CHARS);
 
@@ -31,7 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $total_days = $interval->days;
 
                 // نتیجے کا پیغام (Result Message) تیار کرنا
-                $result_message = "🎉 آپ نے اپنی زندگی کے کل **" . number_format($total_days) . "** دن گزارے ہیں۔";
+                // HTML ٹیگز کو AJAX جواب کے لیے تیار کر رہے ہیں
+                $total_days_formatted = number_format($total_days);
+                $result_message = "<p class='success-message'>🎉 آپ نے اپنی زندگی کے کل <strong>$total_days_formatted</strong> دن گزارے ہیں۔</p>";
             }
 
         } catch (Exception $e) {
@@ -42,36 +45,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error_message = "براہ کرم اپنی تاریخ پیدائش درج کریں۔ (Please enter your Date of Birth)";
     }
 
-    // اگر یہ AJAX درخواست ہے، تو صرف نتیجہ (Result) یا غلطی (Error) کا پیغام دکھائیں
+    // اگر یہ AJAX درخواست ہے، تو صرف نتیجہ یا غلطی کا پیغام دکھائیں
+    // یہ خاص ہیڈر (Header) JavaScript میں سیٹ کیا گیا ہے
     if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
-        echo $result_message ? "<p class='success-message'>$result_message</p>" : "<p class='error-message'>$error_message</p>";
-        // چونکہ ہم AJAX کے ذریعے جواب دے رہے ہیں، اس لیے یہاں ایگزٹ (Exit) کر دیں گے
-        exit; 
+        echo $result_message ? $result_message : "<p class='error-message'>❌ $error_message</p>";
+        exit; // AJAX جواب کے بعد باقی HTML کو لوڈ ہونے سے روکنا
     }
 }
 
-// اگر یہ عام پیج لوڈ (Page Load) ہے، تو پورا HTML دکھائیں
+// HTML ڈھانچہ (Structure)
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOB to Days Calculator</title>
+    <title>Date of Birth to Days Calculator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1 class="main-heading">📅 دنوں کا شمار (Day Count)</h1>
+        <h1 class="main-heading">📅 کل دنوں کا شمار (Total Day Count)</h1>
         <p class="subtitle">اپنی تاریخ پیدائش درج کریں اور جانیں کہ آپ کتنے دن کے ہو چکے ہیں۔</p>
     </header>
 
     <form id="dobForm" method="POST" action="index.php">
         <div class="input-group">
             <label for="dob">تاریخ پیدائش (Date of Birth)</label>
-            <input type="date" id="dob" name="dob" required max="<?php echo date('Y-m-d'); ?>" value="<?php echo htmlspecialchars($dob_input ?? ''); ?>">
+            <input 
+                type="date" 
+                id="dob" 
+                name="dob" 
+                required 
+                max="<?php echo date('Y-m-d'); ?>" 
+                value="<?php echo htmlspecialchars($dob_input); ?>"
+            >
         </div>
 
         <button type="submit" id="calculateBtn" class="purple-button">
@@ -81,11 +91,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     <div id="resultBox" class="result-box">
         <?php
-        // عام پیج لوڈ پر نتائج (Results) دکھائیں (اگر AJAX استعمال نہ ہو تو)
+        // اگر کوئی نتیجہ یا غلطی کا پیغام موجود ہو (غیر-AJAX سبمیشن کی صورت میں)
         if (!empty($result_message)) {
-            echo "<p class='success-message'>$result_message</p>";
+            echo $result_message;
         } elseif (!empty($error_message)) {
-            echo "<p class='error-message'>$error_message</p>";
+            echo "<p class='error-message'>❌ $error_message</p>";
         } else {
             // ابتدائی پیغام (Initial Message)
             echo "<p class='initial-message'>نتیجہ یہاں دکھایا جائے گا۔</p>";
@@ -99,5 +109,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 </html>
 <?php
-// PHP کوڈ اوپن اینڈڈ (Open-Ended) رکھنا ہے، اس لیے یہاں کوئی بندش والا ٹیگ (Closing Tag) نہیں ہے۔
-// یہ **فیز 1** مکمل ہوا۔
+// PHP کوڈ اوپن اینڈڈ (Open-Ended) رکھنا ہے
